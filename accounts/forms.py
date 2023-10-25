@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.models import User
+from accounts.models import User
 
 
 class RegistrationForm(forms.ModelForm):
@@ -8,7 +8,7 @@ class RegistrationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ["username", "email", "password"]
+        fields = ["email", "password"]
 
     def clean_confirm_password(self):
         password = self.cleaned_data.get("password")
@@ -22,6 +22,7 @@ class RegistrationForm(forms.ModelForm):
         user.is_active = (
             True  # Ustawienie is_active na True, inaczej nie działa logowanie
         )
+        user.set_password(self.cleaned_data["password"])
         if commit:
             user.save()
         return user
