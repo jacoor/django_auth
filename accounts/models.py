@@ -7,6 +7,11 @@ from django.contrib.auth.base_user import BaseUserManager
 
 class UserManager(BaseUserManager):
     use_in_migrations = True
+    """
+    Klasycznie django przy tworzeniu użytkowników i super użytkowników oczekuje pola `username`
+    które zostało usunięte z modelu poprzez `username = None`. 
+    Ta klasa jest dostosowana do zastosowania pola "email" do logowania.
+    """
 
     def _create_user(self, email, password, **extra_fields):
         if not email:
@@ -34,11 +39,16 @@ class UserManager(BaseUserManager):
         return self._create_user(email, password, **extra_fields)
 
 
-class User(AbstractUser):
+class User(
+    AbstractUser
+):  # Dziedziczymy z AbstractUser - standardowego użytkownika Django
     USERNAME_FIELD = "email"
+    # domyślnie pole username jest wymagane, więc trzeba to wyczyścić
     REQUIRED_FIELDS = []
-
+    # wskazujemy zdefiniowany powyżej manager użytkowników
     objects = UserManager()
 
+    # usuwam pole z modelu
     username = None
+    # no i wymuszam email unikalny
     email = models.EmailField(unique=True)
