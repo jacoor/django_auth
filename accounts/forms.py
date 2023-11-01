@@ -22,6 +22,11 @@ class RegistrationForm(forms.ModelForm):
         user.is_active = (
             True  # Ustawienie is_active na True, inaczej nie działa logowanie
         )
+        """
+        Ustawiam hasło korzystając z metody set_password. W przeciwnym wypadku Django
+        zapisze hasło jako zwykły tekst, bez zakodowania, co z kolei skutecznie
+        zablokuje możliwość logowania. 
+        """
         user.set_password(self.cleaned_data["password"])
         if commit:
             user.save()
