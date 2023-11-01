@@ -1,5 +1,6 @@
 # Django Email Auth
-Simple project to use email field as login field in Django. 
+Simple project to use email field as login field in Django.
+The more in depth reading about this code can be found on https://akademiait.com.pl/ blog.
 
 # Running the project
 - install poetry
